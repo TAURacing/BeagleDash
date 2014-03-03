@@ -3,9 +3,11 @@ import socket
 
 class UDPSender(Listener):
     dataConvert = {"0x600": {"String":"RPM:",
-                             "Slot":0},
+                             "Slot":0,
+                             "Conversion":1},
                    "0x601": {"String":"OIL:",
-                             "Slot":2}}
+                             "Slot":2,
+                             "Conversion":(1/81.92)}}
     
     def __init__(self, IP="10.0.0.4", PORT=5555):
         self.ip = IP
@@ -22,7 +24,8 @@ class UDPSender(Listener):
         if self.dataConvert.get(hexId):
             dataId = self.dataConvert[hexId]["String"]
             dataSlot = self.dataConvert[hexId]["Slot"]
-            data = (msg.data[dataSlot] << 8) + msg.data[dataSlot + 1]
+            dataConversion = self.dataConvert[hexID]["Conversion"]
+            data = ( (msg.data[dataSlot] << 8) + msg.data[dataSlot + 1] ) * dataConversion
             udpMessage = dataId + data
             return udpMessage
         else:
