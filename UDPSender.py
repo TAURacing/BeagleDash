@@ -1,4 +1,4 @@
-from can import Listener, Message
+from can import Listener
 import socket
 
 class UDPSender(Listener):
