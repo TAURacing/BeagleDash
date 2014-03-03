@@ -14,15 +14,19 @@ class UDPSender(Listener):
         
     def on_message_received(self, msg):
         udpMessage = self.can_to_udp_message(msg)
-        self.sock.sendto(udpMessage.encode(), (self.ip, self.port))
+        if udpMessage:
+            self.sock.sendto(udpMessage.encode(), (self.ip, self.port))
         
     def can_to_udp_message(self, msg):
         hexId = msg.arbritation_id
-        dataId = self.dataConvert[hexId]["String"]
-        dataSlot = self.dataConvert[hexId]["Slot"]
-        data = (msg.data[dataSlot] << 8) + msg.data[dataSlot + 1]
-        udpMessage = dataId + data
-        return udpMessage
+        if self.dataConvert.get(hexId):
+            dataId = self.dataConvert[hexId]["String"]
+            dataSlot = self.dataConvert[hexId]["Slot"]
+            data = (msg.data[dataSlot] << 8) + msg.data[dataSlot + 1]
+            udpMessage = dataId + data
+            return udpMessage
+        else:
+            return None
         
     def __del__(self):
         self.sock.close()
