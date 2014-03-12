@@ -46,10 +46,10 @@ for message in Bus(can_interface):
         UDPMESSAGE = id1 + str(int(data1/81.92))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id2 + str(translate((data2/10),0,65535,-25,125))
+        UDPMESSAGE = id2 + str(translate((data2),0,65535,-25,125))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id3 + str(translate((data3/10),0,65535,25,150))
+        UDPMESSAGE = id3 + str(translate((data3),0,65535,25,150))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
 
