@@ -4,6 +4,19 @@ import random
 import time
 import can
 
+# Test function
+def translate(value, leftMin, leftMax, rightMin, rightMax):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return rightMin + (valueScaled * rightSpan)
+# End test function
+
 can.rc['interface'] = 'socketcan_native'
 from can.interfaces.interface import Bus
 can_interface = 'can0'
@@ -22,12 +35,21 @@ for message in Bus(can_interface):
     data3 = (message.data[6] << 8) + message.data[7]
 
     if ID == 0x600:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'RPM:'
+        id0 = 'RPM:'
+        id1 = 'TPS:'
+        id2 = 'ECT:'
+        id3 = 'EOT:'
 
-        UDPMESSAGE = id3 + str(data3)
+        UDPMESSAGE = id0 + str(data0)
+        print(UDPMESSAGE)
+        sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
+        UDPMESSAGE = id1 + str(long.(data1*81.92))
+        print(UDPMESSAGE)
+        sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
+        UDPMESSAGE = id2 + str(translate((data2/10),0,65535,-25,125))
+        print(UDPMESSAGE)
+        sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
+        UDPMESSAGE = id3 + str(translate((data3/10),0,65535,25,150))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
 
@@ -42,72 +64,6 @@ for message in Bus(can_interface):
         UDPMESSAGE = id2 + str(data2)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-
-    elif ID == 0x602:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
-
-    elif ID == 0x603:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
-
-    elif ID == 0x604:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
-
-    elif ID == 0x605:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
-
-    elif ID == 0x606:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
-
-    elif ID == 0x607:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'placeholder2'
-        id3 = 'placeholder3'
-
-        data0 = data0;
-        data1 = data1;
-        data2 = data2;
-        data3 = data3;
 
     else:
         id0 = 'nothing'
