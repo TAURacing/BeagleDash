@@ -43,7 +43,7 @@ for message in Bus(can_interface):
         UDPMESSAGE = id0 + str(data0)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id1 + str(int(data1*81.92))
+        UDPMESSAGE = id1 + str(int(data1/81.92))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
         UDPMESSAGE = id2 + str(translate((data2/10),0,65535,-25,125))
