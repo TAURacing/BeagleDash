@@ -7,6 +7,10 @@ can.rc['interface'] = 'socketcan_native'
 can_interface = 'can0'
 bus = Bus(can_interface)
 csv = can.CSVWriter(time.strftime('%Y-%m-%d_%H:%M:%S.csv'))
-listeners = [csv, UDPSender()]
+#listeners = [csv, UDPSender(), can.Printer()]
+listeners = [UDPSender(), can.Printer()]
 
 notifier = can.Notifier(bus, listeners)
+
+while True:
+    time.sleep(1)

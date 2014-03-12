@@ -20,7 +20,7 @@ class UDPSender(Listener):
             self.sock.sendto(udpMessage.encode(), (self.ip, self.port))
         
     def can_to_udp_message(self, msg):
-        hexId = msg.arbritation_id
+        hexId = msg.arbitration_id
         if self.dataConvert.get(hexId):
             dataId = self.dataConvert[hexId]["String"]
             dataSlot = self.dataConvert[hexId]["Slot"]
