@@ -1,6 +1,6 @@
 import time
 import can
-import UDPSender
+from UDPSender import UDPSender
 from can.interfaces.interface import Bus
 
 can.rc['interface'] = 'socketcan_native'
