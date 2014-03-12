@@ -1,5 +1,5 @@
 from can import Listener
-from socket import socket
+import socket
 
 class UDPSender(Listener):
     dataConvert = {"0x600": {"String":"RPM:",
