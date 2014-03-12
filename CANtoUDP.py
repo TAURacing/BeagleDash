@@ -43,7 +43,7 @@ for message in Bus(can_interface):
         UDPMESSAGE = id0 + str(data0)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id1 + str(long.(data1*81.92))
+        UDPMESSAGE = id1 + str(int(data1*81.92))
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
         UDPMESSAGE = id2 + str(translate((data2/10),0,65535,-25,125))
@@ -59,7 +59,7 @@ for message in Bus(can_interface):
         id2 = 'OIL:'
         id3 = 'placeholder3'
 
-        data3 = (float)data3/81.92
+        data3 = float(data3)/81.92
 
         UDPMESSAGE = id2 + str(data2)
         print(UDPMESSAGE)
