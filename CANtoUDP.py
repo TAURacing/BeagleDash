@@ -3,8 +3,9 @@ import socket
 import random
 import time
 import can
+import csv
+import math
 
-# Test function
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
     leftSpan = leftMax - leftMin
@@ -15,7 +16,17 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
 
     # Convert the 0-1 range into a value in the right range.
     return rightMin + (valueScaled * rightSpan)
-# End test function
+
+def translate2dec(value, leftMin, leftMax, rightMin, rightMax):
+    # Figure out how 'wide' each range is
+    leftSpan = leftMax - leftMin
+    rightSpan = rightMax - rightMin
+
+    # Convert the left range into a 0-1 range (float)
+    valueScaled = float(value - leftMin) / float(leftSpan)
+
+    # Convert the 0-1 range into a value in the right range.
+    return math.ceil((rightMin + (valueScaled * rightSpan))*100)/100
 
 can.rc['interface'] = 'socketcan_native'
 from can.interfaces.interface import Bus
@@ -35,33 +46,34 @@ for message in Bus(can_interface):
     data3 = (message.data[6] << 8) + message.data[7]
 
     if ID == 0x600:
-        id0 = 'RPM:'
-        id1 = 'TPS:'
-        id2 = 'ECT:'
-        id3 = 'EOT:'
+        id0 = 'rpm_S'
+        id1 = 'eot_S'
+        id2 = 'gear_S'
+        id3 = 'vbat_S'
 
         UDPMESSAGE = id0 + str(data0)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id1 + str(data1/81.92)
+        UDPMESSAGE = id1 + str(data1/10)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id2 + str(translate((data2),0,65535,-25,125))
+        UDPMESSAGE = id2 + str(data2)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
-        UDPMESSAGE = id3 + str(translate((data3),0,65535,25,150))
+        UDPMESSAGE = id3 + str(ceil((data3/1000)*100)/100)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
 
     elif ID == 0x601:
-        id0 = 'placeholder0'
-        id1 = 'placeholder1'
-        id2 = 'OIL:'
+        id0 = 'lam1_S'
+        id1 = 'ect1_S'
+        id2 = 'placeholder2:'
         id3 = 'placeholder3'
 
-        data3 = float(data3)/81.92
-
-        UDPMESSAGE = id2 + str(data2)
+        UDPMESSAGE = id0 + str(ceil((data0/1000)*100)/100)
+        print(UDPMESSAGE)
+        sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
+        UDPMESSAGE = id1 + str(data1/10)
         print(UDPMESSAGE)
         sock.sendto(UDPMESSAGE.encode(), (UDP_IP, UDP_PORT))
 
