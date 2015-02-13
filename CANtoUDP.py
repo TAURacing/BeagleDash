@@ -6,6 +6,7 @@ import can
 import csv
 import math
 
+
 def translate(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
     leftSpan = leftMax - leftMin
@@ -16,6 +17,7 @@ def translate(value, leftMin, leftMax, rightMin, rightMax):
 
     # Convert the 0-1 range into a value in the right range.
     return rightMin + (valueScaled * rightSpan)
+
 
 def translate2dec(value, leftMin, leftMax, rightMin, rightMax):
     # Figure out how 'wide' each range is
