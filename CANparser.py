@@ -1,7 +1,5 @@
 __author__ = 'Geir Istad'
-import can
-import math
-from ctypes import *
+from ctypes import c_int8, c_uint8
 
 
 class CanParser:
@@ -57,7 +55,7 @@ class CanParser:
             self.init_ecu_container(dict(), 'map1', self.frame_list[0], 6, True,
                                     1)
         self.add_ecu_container_to_ecu_dicts(map1_container)
-        
+
         # For frame 1
         tps1_container = \
             self.init_ecu_container(dict(), 'tps1', self.frame_list[1], 0, True,

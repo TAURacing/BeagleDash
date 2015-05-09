@@ -1,14 +1,18 @@
 BeagleDash
 ==========
 
-This repository is for CAN communication using Python. The platform used for testing is a BeagleBone Black running Arch Liux ARM using a MCP2562 CAN transciever on CAN interface can0.
+This repository is for CAN communication and data storage using Python for the Team Aberdeen University (TAU) Formula Studnet team.
 
-Dependencies:
-Python 3.3.x
+The platform used for testing is a BeagleBone Black running Arch Liux ARM using a MCP2562 CAN transciever on CAN interface can0.
+
+## Dependencies
+
+Python 2.7.x
+
+python-can by hardbyte
 
 https://bitbucket.org/hardbyte/python-can
 
-Files:
+tinydb
 
-CANtoUDP.py
-Purpouse of this file is to decode the CAN data recieved on the can0 interface according to the setup in the liferacing software. Each dataslot in each dataframe for each unique frame ID is wrapped in an UPD package in order to send this to a remote client.
+https://pypi.python.org/pypi/tinydb/
