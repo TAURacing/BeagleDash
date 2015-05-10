@@ -11,25 +11,47 @@ class CanStorage:
     __ready_to_store = False
 
     def __init__(self, a_file_path):
+        """
+        Opens (or creates) a data base file that that the instance of a
+        CanStorage interacts with.
+
+        :param a_file_path:
+        Path and file name. Note: path _has_ to exist, if not the program will
+        exit non-gracefully.
+
+        :return:
+        N/A
+        """
         self.__data_base = TinyDB(a_file_path)
         # Check if we have a current sequence stored in the filemajigger
         sequence_table = self.__data_base.table('sequence_counter')
         sequence_check = sequence_table.search(where('sequence'))
-        print sequence_check
         # If a previous sequence exist we increment the max by one
         if sequence_check:
             self.__max_sequence = max(sequence_check)['sequence']
         # If this is the first entry set current sequence to 0
         else:
             self.__max_sequence = 0
-        print self.__max_sequence
 
-    def test_this_thing(self):
+    def print_debug_info(self):
+        """
+        Provides debug information about contents of data base.
+
+        :return:
+        N/A
+        """
         print self.__data_base.all()
-        print self.__data_base.search(where('rpm'))
         print self.__data_base.tables()
 
     def __init_storage(self):
+        """
+        Initialises a new storage table. Increments the sequence counter, stores
+        it for future use and creates a new named table for the new sequence of
+        data to be stored.
+
+        :return:
+        N/A
+        """
         self.__current_sequence = self.__max_sequence + 1
         # Store the current sequence to db for next time the file is opened
         sequence_table = self.__data_base.table('sequence_counter')
@@ -40,44 +62,75 @@ class CanStorage:
         self.__ready_to_store = True
 
     def store(self, a_dict_entry):
+        """
+        Stores a data entry in the currently opened data base table. If the
+        storage is not initialised it will call the initialising function to
+        create a new table for the current sequence of data to be stored.
+
+        :param a_dict_entry:
+        A data container with a 'data_id' field which is used as storage key to
+        the data base.
+
+        :return:
+        N/A
+        """
         if not self.__ready_to_store:
             self.__init_storage()
         # Extract the data_id key
         data_key = a_dict_entry['data_id']
         # Remove the data_id key from the dictionary
-        a_dict_entry.pop(data_key, 0)
+        a_dict_entry.pop('data_id', 0)
         # Store the passed dictionary with its key being the data_id field
         self.__current_sequence_table.insert({data_key: a_dict_entry})
 
     def load(self, a_sequence_number, a_key):
+        """
+        Provides access to the data stored for the specified sequence number and
+        the specified key ('data_id').
+
+        :param a_sequence_number:
+        The sequence number of interest.
+
+        :param a_key:
+        A 'data_id' key containing the data we are interested in retrieving.
+
+        :return:
+        data_list_for_key containing a list of dictionary objects.
+        """
         sequence_name = 'sequence' + str(a_sequence_number)
         selected_table = self.__data_base.table(sequence_name)
-        key_list = selected_table.search(where(a_key))
-        return key_list
+        data_list_for_key = selected_table.search(where(a_key))
+        return data_list_for_key
 
     def get_max_sequence(self):
+        """
+        Give a user the number of data sequences stored in the data base.
+
+        :return:
+        Number of sequences currently stored.
+        """
         return self.__max_sequence
 
-    def get_data_types(self):
-        return None
+    def get_data_types(self, a_sequence_number):
+        """
+        Returns all the data types that are stored in a given data sequence
+        entry.
 
+        :param a_sequence_number:
+        The data sequence the user is interested in retrieving a list of
+        different data entries for.
 
-testStore = CanStorage('db_test/somefile.json')
-
-somedict = dict()
-somedict['data_id'] = 'rpm'
-somedict['value'] = 324
-somedict['timestamp'] = 32434
-somedict2 = dict(somedict)
-somedict2['timestamp'] = 46666
-
-testStore.store(somedict)
-testStore.store(somedict2)
-
-testStore.test_this_thing()
-
-extracted_list = testStore.load(1, 'rpm')
-print extracted_list
-
-extracted_list = testStore.load(2, 'rpm')
-print extracted_list
+        :return:
+        key_list containing the unique 'data_id's available in the specified
+        sequence number.
+        """
+        key_list = list()
+        # Only return for valid sequence numbers!
+        if a_sequence_number <= self.__max_sequence:
+            sequence_name = 'sequence' + str(a_sequence_number)
+            selected_table = self.__data_base.table(sequence_name)
+            all_items = selected_table.all()
+            for item in all_items:
+                if item.keys() not in key_list:
+                    key_list.append(item.keys())
+        return key_list
