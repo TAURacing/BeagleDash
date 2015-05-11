@@ -14,4 +14,4 @@ bus = Bus(can_interface)
 myParser = CanParser()
 
 for message in bus:
-    print message
+    myParser.parse_can_message(message)
