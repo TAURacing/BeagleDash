@@ -16,7 +16,7 @@ class CanParser:
     def __init__(self):
         # Generate the frame ids used to initialise the parser
         for x in range(0, self.max_frames):
-            self.frame_list[x] = hex(self.start_frame + x)
+            self.frame_list[x] = self.start_frame + x
             print(type(self.frame_list[x]))
             print(self.frame_list[x])
         # Initialise the parser dictionaries
@@ -128,7 +128,7 @@ class CanParser:
         return calculated_value * a_conversion_value
 
     def parse_can_message(self, a_message):
-        frame_key = str(hex(a_message.arbitration_id))
+        frame_key = a_message.arbitration_id
         print(frame_key)
         print(type(frame_key))
         if frame_key in self.ecu_frame_reference:
