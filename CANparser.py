@@ -124,7 +124,7 @@ class CanParser:
             ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
             ms_df_16 = c_uint16((ms_df_8.value << 8)).value | ls_df_8.value
 
-        return ms_df_16.value * a_conversion_value
+        return ms_df_16 * a_conversion_value
 
     def parse_can_message(self, a_message):
         frame_key = a_message.arbitration_id
