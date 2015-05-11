@@ -11,7 +11,7 @@ class CanParser:
     ecu_frame_reference = {}
     max_frames = 20
     start_frame = 0x600
-    frame_list = [] * max_frames
+    frame_list = [0] * max_frames
 
     def __init__(self):
         # Generate the frame ids used to initialise the parser
