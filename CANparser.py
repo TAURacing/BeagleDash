@@ -115,16 +115,12 @@ class CanParser:
 
         :return: The parsed value with applied sign and conversion factor.
         """
+        msb = a_message.data[a_start_frame]
+        lsb = a_message.data[a_start_frame + 1]
+        value = (msb << 8) | lsb
         if a_is_signed:
-            ms_df_8 = c_int8(a_message.data[a_start_frame])
-            ls_df_8 = c_int8(a_message.data[a_start_frame + 1])
-            ms_df_16 = c_int16((ms_df_8.value << 8)).value | ls_df_8.value
-        else:
-            ms_df_8 = c_uint8(a_message.data[a_start_frame])
-            ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
-            ms_df_16 = c_uint16((ms_df_8.value << 8)).value | ls_df_8.value
-
-        return ms_df_16 * a_conversion_value
+            value = c_int16(value).value
+        return value * a_conversion_value
 
     def parse_can_message(self, a_message):
         frame_key = a_message.arbitration_id
@@ -135,8 +131,7 @@ class CanParser:
                 is_signed = selected_dict[data_types]['signed']
                 conversion_value = selected_dict[data_types]['conversion']
                 start_frame = selected_dict[data_types]['start_frame_slot']
-                received_value = self.convert_data_values(a_message,
-                                                          start_frame,
+                received_value = self.convert_data_values(start_frame,
                                                           is_signed,
                                                           conversion_value)
                 print str(selected_dict[data_types]['data_id']) + ' : ' + str(received_value)
