@@ -5,10 +5,7 @@ import CANstorage
 import ctypes
 
 import can
-can.rc['interface'] = 'socketcan_ctypes'
-
-myBus = can.interface.SocketscanCtypes_Bus()
-
+myBus = can.interface.Bus()
 can_interface = 'can0'
 
 myParser = CanParser()
