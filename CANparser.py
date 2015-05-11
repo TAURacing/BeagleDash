@@ -1,5 +1,5 @@
 __author__ = 'Geir Istad'
-from ctypes import c_int8, c_uint8
+from ctypes import c_int8, c_uint8, c_int16, c_uint16
 
 
 class CanParser:
@@ -116,17 +116,15 @@ class CanParser:
         :return: The parsed value with applied sign and conversion factor.
         """
         if a_is_signed:
-            ls_df_8 = c_int8(a_message.data[a_start_frame])
-            ms_df_8 = c_int8(a_message.data[a_start_frame + 1])
-
+            ms_df_8 = c_int8(a_message.data[a_start_frame])
+            ls_df_8 = c_int8(a_message.data[a_start_frame + 1])
+            ms_df_16 = c_int16((ms_df_8.value << 8)) | ls_df_8
         else:
-            ls_df_8 = c_uint8(a_message.data[a_start_frame])
-            ms_df_8 = c_uint8(a_message.data[a_start_frame + 1])
+            ms_df_8 = c_uint8(a_message.data[a_start_frame])
+            ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
+            ms_df_16 = c_uint16((ms_df_8.value << 8)) | ls_df_8
 
-        ms_df_16 = ms_df_8.value
-        ls_df_16 = ls_df_8.value
-        calculated_value = (ms_df_16 << 8) | ls_df_16
-        return calculated_value * a_conversion_value
+        return ms_df_16.value * a_conversion_value
 
     def parse_can_message(self, a_message):
         frame_key = a_message.arbitration_id
