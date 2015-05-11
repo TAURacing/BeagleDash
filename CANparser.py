@@ -132,8 +132,13 @@ class CanParser:
         print(frame_key)
         print(type(frame_key))
         if frame_key in self.ecu_frame_reference:
+            print('Found frame!')
             selected_list = self.ecu_frame_reference[frame_key]
+            print('selected_list: ')
+            print(selected_list)
             selected_dict = self.ecu_storage
+            print('selected_dict: ')
+            print(selected_dict)
             for data_types in selected_list:
                 is_signed = selected_dict[data_types]['signed']
                 conversion_value = selected_dict[data_types]['conversion']
