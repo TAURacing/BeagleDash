@@ -4,7 +4,7 @@ from CANparser import CanParser
 import CANstorage
 import can
 
-can.rc['interface'] = 'socketcan_native'
+can.rc['interface'] = 'socketcan_ctypes'
 from can.interfaces.interface import Bus
 can_interface = 'can0'
 
