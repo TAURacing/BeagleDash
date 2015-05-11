@@ -118,11 +118,11 @@ class CanParser:
         if a_is_signed:
             ms_df_8 = c_int8(a_message.data[a_start_frame])
             ls_df_8 = c_int8(a_message.data[a_start_frame + 1])
-            ms_df_16 = c_int16((ms_df_8.value << 8)) | ls_df_8
+            ms_df_16 = c_int16((ms_df_8.value << 8)) | c_int16(ls_df_8.value)
         else:
             ms_df_8 = c_uint8(a_message.data[a_start_frame])
             ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
-            ms_df_16 = c_uint16((ms_df_8.value << 8)) | ls_df_8
+            ms_df_16 = c_uint16((ms_df_8.value << 8)) | c_int16(ls_df_8.value)
 
         return ms_df_16.value * a_conversion_value
 
