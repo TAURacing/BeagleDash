@@ -2,6 +2,7 @@ __author__ = 'Geir'
 
 from CANparser import CanParser
 import CANstorage
+import ctypes
 import can
 
 can.rc['interface'] = 'socketcan_ctypes'
