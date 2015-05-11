@@ -116,12 +116,12 @@ class CanParser:
         :return: The parsed value with applied sign and conversion factor.
         """
         if a_is_signed:
-            ms_df_8 = c_int8(a_message.data[a_start_frame])
-            ls_df_8 = c_int8(a_message.data[a_start_frame + 1])
+            ls_df_8 = c_int8(a_message.data[a_start_frame])
+            ms_df_8 = c_int8(a_message.data[a_start_frame + 1])
 
         else:
-            ms_df_8 = c_uint8(a_message.data[a_start_frame])
-            ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
+            ls_df_8 = c_uint8(a_message.data[a_start_frame])
+            ms_df_8 = c_uint8(a_message.data[a_start_frame + 1])
 
         ms_df_16 = ms_df_8.value
         ls_df_16 = ls_df_8.value
