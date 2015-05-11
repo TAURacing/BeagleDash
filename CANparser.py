@@ -127,6 +127,7 @@ class CanParser:
 
     def parse_can_message(self, a_message):
         frame_key = a_message.arbitration_id
+        print frame_key
         if frame_key in self.ecu_frame_reference:
             selected_list = self.ecu_frame_reference[frame_key]
             selected_dict = self.ecu_storage
