@@ -10,13 +10,13 @@ class CanParser:
     ecu_storage = {}
     ecu_frame_reference = {}
     max_frames = 20
-    start_frame = 600
-    frame_list = [''] * max_frames
+    start_frame = 0x600
+    frame_list = [] * max_frames
 
     def __init__(self):
         # Generate the frame ids used to initialise the parser
         for x in range(0, self.max_frames):
-            self.frame_list[x] = '0x' + str(self.start_frame + x)
+            self.frame_list[x] = hex(self.start_frame + x)
         # Initialise the parser dictionaries
         self.init_ecu_storage()
 
