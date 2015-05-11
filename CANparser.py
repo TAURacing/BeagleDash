@@ -118,13 +118,16 @@ class CanParser:
         :return: The parsed value with applied sign and conversion factor.
         """
         if a_is_signed:
-            ms_data_frame = c_int8(a_message.data[a_start_frame])
-            ls_data_frame = c_int8(a_message.data[a_start_frame + 1])
-        else:
-            ms_data_frame = c_uint8(a_message.data[a_start_frame])
-            ls_data_frame = c_uint8(a_message.data[a_start_frame + 1])
+            ms_df_8 = c_int8(a_message.data[a_start_frame])
+            ls_df_8 = c_int8(a_message.data[a_start_frame + 1])
 
-        calculated_value = ms_data_frame.value << 8 + ls_data_frame.value
+        else:
+            ms_df_8 = c_uint8(a_message.data[a_start_frame])
+            ls_df_8 = c_uint8(a_message.data[a_start_frame + 1])
+
+        ms_df_16 = ms_df_8.value
+        ls_df_16 = ls_df_8.value
+        calculated_value = (ms_df_16 << 8) | ls_df_16
         return calculated_value * a_conversion_value
 
     def parse_can_message(self, a_message):
