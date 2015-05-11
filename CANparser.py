@@ -141,6 +141,6 @@ class CanParser:
                                                           start_frame,
                                                           is_signed,
                                                           conversion_value)
-                print str(selected_dict[data_types]) + ' : ' + str(received_value)
+                print str(selected_dict[data_types]['data_id']) + ' : ' + str(received_value)
                 # TODO: Find out how the data should be stored, as of now it is
                 # parsed and then left in limbo
