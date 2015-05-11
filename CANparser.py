@@ -17,6 +17,8 @@ class CanParser:
         # Generate the frame ids used to initialise the parser
         for x in range(0, self.max_frames):
             self.frame_list[x] = hex(self.start_frame + x)
+            print(type(self.frame_list[x]))
+            print(self.frame_list[x])
         # Initialise the parser dictionaries
         self.init_ecu_storage()
 
