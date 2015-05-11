@@ -3,9 +3,9 @@ __author__ = 'Geir'
 from CANparser import CanParser
 import CANstorage
 import ctypes
-import can
 
-#can.rc['interface'] = 'socketcan_ctypes'
+can.rc['interface'] = 'socketcan_ctypes'
+import can
 from can.interfaces.interface import Bus
 can_interface = 'can0'
 
