@@ -11,7 +11,7 @@ can_interface = 'can0'
 bus = Bus(can_interface)
 
 my_parser = CanParser()
-my_storage = CanStorage('/db_test/db.json')
+my_storage = CanStorage('./db_test/db.json')
 
 for message in bus:
     parsed_list = my_parser.parse_can_message(message)
