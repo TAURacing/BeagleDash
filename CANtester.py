@@ -1,8 +1,7 @@
 __author__ = 'Geir'
 
 from CANparser import CanParser
-import CANstorage
-import ctypes
+from CANstorage import CanStorage
 
 import can
 can.rc['interface'] = 'socketcan_ctypes'
@@ -11,7 +10,9 @@ can_interface = 'can0'
 
 bus = Bus(can_interface)
 
-myParser = CanParser()
+my_parser = CanParser()
+my_storage = CanStorage('/db_test/db.json')
 
 for message in bus:
-    myParser.parse_can_message(message)
+    parsed_list = my_parser.parse_can_message(message)
+    my_storage.store(parsed_list)

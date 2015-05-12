@@ -61,27 +61,40 @@ class CanStorage:
         self.__current_sequence_table = self.__data_base.table(sequence_name)
         self.__ready_to_store = True
 
-    def store(self, a_dict_entry):
+    def store(self, a_dict_or_list_entry):
         """
         Stores a data entry in the currently opened data base table. If the
         storage is not initialised it will call the initialising function to
         create a new table for the current sequence of data to be stored.
 
-        :param a_dict_entry:
-        A data container with a 'data_id' field which is used as storage key to
-        the data base.
+        :param a_dict_or_list_entry:
+        Either a list containing several dictionary entries or a single
+        dictionary entry containing a 'data_id' filed.
 
         :return:
         N/A
         """
         if not self.__ready_to_store:
             self.__init_storage()
-        # Extract the data_id key
-        data_key = a_dict_entry['data_id']
-        # Remove the data_id key from the dictionary
-        a_dict_entry.pop('data_id', 0)
-        # Store the passed dictionary with its key being the data_id field
-        self.__current_sequence_table.insert({data_key: a_dict_entry})
+        #  Check if we're storing a list or a dictionary
+        if type(a_dict_or_list_entry) == list:
+            # Cycle through all dictionaries stored in list
+            for list_entry in a_dict_or_list_entry:
+                # Get and remove the key from the dict
+                data_key = list_entry['data_id']
+                list_entry.pop('data_id', 0)
+                # Store the passed dictionary with its key being the data_id
+                # field
+                self.__current_sequence_table.insert({data_key: list_entry})
+        elif type(a_dict_or_list_entry) == dict:
+            # Get and remove the key from the dict
+            data_key = a_dict_or_list_entry['data_id']
+            a_dict_or_list_entry.pop('data_id', 0)
+            # Store the passed dictionary with its key being the data_id field
+            self.__current_sequence_table.insert({data_key:
+                                                      a_dict_or_list_entry})
+        else:
+            exit('CanParser.store() expects list or dict entries!')
 
     def load(self, a_sequence_number, a_key):
         """
@@ -96,10 +109,13 @@ class CanStorage:
 
         :return:
         data_list_for_key containing a list of dictionary objects.
+        Will return an empty list of the sequence number is invalid.
         """
-        sequence_name = 'sequence' + str(a_sequence_number)
-        selected_table = self.__data_base.table(sequence_name)
-        data_list_for_key = selected_table.search(where(a_key))
+        data_list_for_key = list()
+        if a_sequence_number <= self.__max_sequence:
+            sequence_name = 'sequence' + str(a_sequence_number)
+            selected_table = self.__data_base.table(sequence_name)
+            data_list_for_key = selected_table.search(where(a_key))
         return data_list_for_key
 
     def get_max_sequence(self):
@@ -123,6 +139,7 @@ class CanStorage:
         :return:
         key_list containing the unique 'data_id's available in the specified
         sequence number.
+        Will return an empty list of the sequence number is invalid.
         """
         key_list = list()
         # Only return for valid sequence numbers!
