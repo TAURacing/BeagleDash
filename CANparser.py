@@ -131,9 +131,11 @@ class CanParser:
                 is_signed = selected_dict[data_types]['signed']
                 conversion_value = selected_dict[data_types]['conversion']
                 start_frame = selected_dict[data_types]['start_frame_slot']
-                received_value = self.convert_data_values(start_frame,
+                received_value = self.convert_data_values(a_message,
+                                                          start_frame,
                                                           is_signed,
                                                           conversion_value)
-                print str(selected_dict[data_types]['data_id']) + ' : ' + str(received_value)
+                print str(selected_dict[data_types]['data_id']) + ' : ' + \
+                      str(received_value)
                 # TODO: Find out how the data should be stored, as of now it is
                 # parsed and then left in limbo
