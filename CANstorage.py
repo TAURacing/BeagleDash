@@ -148,6 +148,6 @@ class CanStorage:
             selected_table = self.__data_base.table(sequence_name)
             all_items = selected_table.all()
             for item in all_items:
-                if item.keys() not in key_list:
-                    key_list.append(item.keys())
+                if item.keys()[0] not in key_list:
+                    key_list.append(item.keys()[0])
         return key_list
