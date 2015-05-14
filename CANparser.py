@@ -42,48 +42,54 @@ class CanParser:
         JSON file?
         :return: N/A
         """
+        # Acceleration frame
+        x_acc_container = \
+            self.__init_ecu_container(dict(), 'xacc', 0x100, 0, True,
+                1.0/8192.0)
+        self.__add_ecu_container_to_ecu_dicts(x_acc_container)
+        y_acc_container = \
+            self.__init_ecu_container(dict(), 'yacc', 0x100, 2, True,
+                1.0/8192.0)
+        self.__add_ecu_container_to_ecu_dicts(y_acc_container)
+        z_acc_container = \
+            self.__init_ecu_container(dict(), 'zacc', 0x100, 4, True,
+                1.0/8192.0)
+        self.__add_ecu_container_to_ecu_dicts(z_acc_container)
+
         # For frame 0
         rpm_container = \
             self.__init_ecu_container(dict(), 'rpm', self.__frame_list[0], 0,
-                True,
-                1)
+                True, 1)
         self.__add_ecu_container_to_ecu_dicts(rpm_container)
         eot_container = \
             self.__init_ecu_container(dict(), 'eot', self.__frame_list[0], 2,
-                True,
-                1.0 / 10.0)
+                True, 1.0 / 10.0)
         self.__add_ecu_container_to_ecu_dicts(eot_container)
         vbat_container = \
             self.__init_ecu_container(dict(), 'vbat', self.__frame_list[0], 4,
-                True,
-                1.0 / 1000.0)
+                True, 1.0 / 1000.0)
         self.__add_ecu_container_to_ecu_dicts(vbat_container)
         map1_container = \
             self.__init_ecu_container(dict(), 'map1', self.__frame_list[0], 6,
-                True,
-                1)
+                True, 1)
         self.__add_ecu_container_to_ecu_dicts(map1_container)
 
         # For frame 1
         tps1_container = \
             self.__init_ecu_container(dict(), 'tps1', self.__frame_list[1], 0,
-                True,
-                1.0 / 81.92)
+                True, 1.0 / 81.92)
         self.__add_ecu_container_to_ecu_dicts(tps1_container)
         eop1_container = \
             self.__init_ecu_container(dict(), 'eop1', self.__frame_list[1], 2,
-                True,
-                1)
+                True, 1)
         self.__add_ecu_container_to_ecu_dicts(eop1_container)
         gear_container = \
             self.__init_ecu_container(dict(), 'gear', self.__frame_list[1], 4,
-                True,
-                1)
+                True, 1)
         self.__add_ecu_container_to_ecu_dicts(gear_container)
         drivenSpeed_container = \
             self.__init_ecu_container(dict(), 'drivenSpeed',
-                self.__frame_list[1],
-                6, True, 0.036)
+                self.__frame_list[1], 6, True, 0.036)
         self.__add_ecu_container_to_ecu_dicts(drivenSpeed_container)
 
     def __add_ecu_container_to_ecu_dicts(self, a_dict):
