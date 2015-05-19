@@ -45,15 +45,15 @@ class CanParser:
         # Acceleration frame
         x_acc_container = \
             self.__init_ecu_container(dict(), 'xacc', 0x100, 0, True,
-                1.0/1024.0)
+                1.0/8192.0)
         self.__add_ecu_container_to_ecu_dicts(x_acc_container)
         y_acc_container = \
             self.__init_ecu_container(dict(), 'yacc', 0x100, 2, True,
-                1.0/1024.0)
+                1.0/8192.0)
         self.__add_ecu_container_to_ecu_dicts(y_acc_container)
         z_acc_container = \
             self.__init_ecu_container(dict(), 'zacc', 0x100, 4, True,
-                1.0/1024.0)
+                1.0/8192.0)
         self.__add_ecu_container_to_ecu_dicts(z_acc_container)
         
         # Yaw, pitch, roll frame
