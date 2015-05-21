@@ -15,4 +15,6 @@ my_storage = CanStorage('./db_test/db.json')
 
 for message in bus:
     parsed_list = my_parser.parse_can_message(message)
+    print(parsed_list)
     my_storage.store(parsed_list)
+    #print(message)
