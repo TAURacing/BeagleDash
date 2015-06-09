@@ -44,6 +44,7 @@ class ParseAndStore(can.Listener):
 
 can.rc['interface'] = 'socketcan_ctypes'
 from can.interfaces.interface import Bus
+
 can_interface = 'can0'
 
 bus = Bus(can_interface)
