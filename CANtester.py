@@ -1,20 +1,58 @@
 __author__ = 'Geir'
 
+import can
+import csv
 from CANparser import CanParser
 from CANstorage import CanStorage
 
-import can
+
+class ParseAndStore(can.Listener):
+    __parser = CanParser()
+    __0x600_file_name = './can0x600.csv'
+    __0x601_file_name = './can0x601.csv'
+    __0x600_file = None
+    __0x601_file = None
+    __0x600_csv_writer = None
+    __0x601_csv_writer = None
+
+    def __init__(self):
+        self.__0x600_file = open(self.__0x600_file_name, 'wb')
+        self.__0x601_file = open(self.__0x601_file_name, 'wb')
+        self.__0x600_csv_writer = csv.writer(self.__0x600_file, delimiter=',',
+                                             quotechar='|',
+                                             quoting=csv.QUOTE_MINIMAL)
+        self.__0x601_csv_writer = csv.writer(self.__0x601_file, delimiter=',',
+                                             quotechar='|',
+                                             quoting=csv.QUOTE_MINIMAL)
+
+    def on_message_received(self, msg):
+        data = self.__parser.parse_can_message_to_list(msg)
+        if data[0] == 0x600:
+            self.__0x600_csv_writer.writerow(data[1:])
+        elif data[0] == 0x601:
+            self.__0x601_csv_writer.writerow(data[1:])
+        else:
+            # Ignore any other data!
+            pass
+
+    def __del__(self):
+        if self.__0x600_file_name:
+            self.__0x600_file_name.close()
+        if self.__0x601_file_name:
+            self.__0x601_file_name.close()
+
+
 can.rc['interface'] = 'socketcan_ctypes'
 from can.interfaces.interface import Bus
 can_interface = 'can0'
 
 bus = Bus(can_interface)
 
-my_parser = CanParser()
-my_storage = CanStorage('./db_test/db.json')
+# TODO: Test if this is actually working
+notifier = can.Notifier(bus, [ParseAndStore()])
 
-for message in bus:
-    parsed_list = my_parser.parse_can_message(message)
-    print(parsed_list)
-    my_storage.store(parsed_list)
-    #print(message)
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    pass
