@@ -2,6 +2,7 @@ __author__ = 'Geir'
 
 import can
 import csv
+import time
 from CANparser import CanParser
 from CANstorage import CanStorage
 
@@ -54,6 +55,6 @@ notifier = can.Notifier(bus, [ParseAndStore()])
 
 try:
     while True:
-        pass
+        time.sleep(1)
 except KeyboardInterrupt:
-    pass
+    bus.shutdown()
