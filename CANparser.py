@@ -22,7 +22,7 @@ class CanParser:
         # Initialise the parser dictionaries
         self.__init_ecu_storage()
         # Set the start-time for the parser
-        self.__start_time = time.time()
+        self.__start_time = time.clock()
 
     @staticmethod
     def __init_ecu_container(a_dict, a_id, a_frame_id, a_start_frame_slot,
@@ -55,7 +55,7 @@ class CanParser:
             self.__init_ecu_container(dict(), 'zacc', 0x100, 4, True,
                 1.0/8192.0)
         self.__add_ecu_container_to_ecu_dicts(z_acc_container)
-        
+
         # Yaw, pitch, roll frame
         yaw_container = \
             self.__init_ecu_container(dict(), 'yaw', 0x101, 0, True,
@@ -160,7 +160,7 @@ class CanParser:
         return value * a_conversion_value
 
     def __get_timestamp(self):
-        return time.time() - self.__start_time
+        return time.clock() - self.__start_time
 
     def parse_can_message(self, a_message):
         frame_key = a_message.arbitration_id
