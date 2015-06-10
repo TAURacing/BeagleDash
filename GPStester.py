@@ -16,7 +16,7 @@ class GpsPoller(threading.Thread):
             if self.gpsd.next() != -1:
                 print('got data')
                 print('lat: ' + str(self.gpsd.fix.latitude))
-            elif: self.gpsd.next() == 1:
+            elif self.gpsd.next() == 1:
                 print('got -1')
 
 gps_thread = GpsPoller() # create the thread
