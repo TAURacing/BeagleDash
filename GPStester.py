@@ -32,7 +32,6 @@ class GpsPoller(threading.Thread):
                 csv_row = list()
                 delta_time = '%.3f' % delta_time
                 csv_row.append(delta_time)
-                # utc_time = '%.3f' % self.gpsd.utc
                 utc_time = self.gpsd.utc
                 csv_row.append(utc_time)
                 latitude = '%.5f' % self.gpsd.fix.latitude
