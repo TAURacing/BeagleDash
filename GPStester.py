@@ -1,55 +1,57 @@
-import os
-import gps
-import time
-import time
 import threading
+import time
+import gps
+import csv
+
 
 class GpsPoller(threading.Thread):
-    def __init__(self):
+    __log_file_name = None
+    __log_file = None
+    __csv_writer = None
+    __current_value = None
+    __start_time = None
+    __debug = None
+    running = False
+
+    def __init__(self, a_log_file_name='./gps.csv', a_debug = False):
+        self.__log_file_name = a_log_file_name
+        self.__log_file = open(self.__log_file_name, 'wb')
+        self.__csv_writer = csv.writer(self.__log_file, delimiter=',',
+                                       quotechar='|',
+                                       quoting=csv.QUOTE_MINIMAL)
+        self.__start_time = time.clock()
+        self.__debug = a_debug
         threading.Thread.__init__(self)
         self.gpsd = gps.gps(mode=gps.WATCH_ENABLE)
-        self.current_value = None # ???
         self.running = True
 
     def run(self):
         while self.running:
             if self.gpsd.next() != -1:
-                print('got data')
-                print('lat: ' + str(self.gpsd.fix.latitude))
+                delta_time = time.clock() - self.__start_time
+                csv_row = list()
+                delta_time = '%.3f' % delta_time
+                csv_row.append(delta_time)
+                utc_time = '%.3f' % gpsd.fix.utc
+                csv_row.append(utc_time)
+                latitude = '%.5f' % gpsd.fix.latitude
+                csv_row.append(latitude)
+                longitude = '%.5f' % gpsd.fix.longitude
+                csv_row.append(longitude)
+                speed_ms = '%.2f' % gpsd.fix.speed
+                csv_row.append(speed_ms)
+                if self.__debug:
+                        print(csv_row)
+                self.__csv_writer.writerow(csv_row)
             elif self.gpsd.next() == 1:
                 print('got -1')
 
-gps_thread = GpsPoller() # create the thread
+gps_thread = GpsPoller('./gps.csv', True)
 try:
-    gps_thread.start() # start it up
+    gps_thread.start()
     while True:
-        #It may take a second or two to get good data
-        #print gpsd.fix.latitude,', ',gpsd.fix.longitude,'  Time: ',gpsd.utc
+        time.sleep(1)
 
-        #os.system('clear')
-#
-        #print
-        #print ' GPS reading'
-        #print '----------------------------------------'
-        #print 'latitude    ' , gpsd.fix.latitude
-        #print 'longitude   ' , gpsd.fix.longitude
-        #print 'time utc    ' , gpsd.utc,' + ', gpsd.fix.time
-        #print 'altitude (m)' , gpsd.fix.altitude
-        #print 'eps         ' , gpsd.fix.eps
-        #print 'epx         ' , gpsd.fix.epx
-        #print 'epv         ' , gpsd.fix.epv
-        #print 'ept         ' , gpsd.fix.ept
-        #print 'speed (m/s) ' , gpsd.fix.speed
-        #print 'climb       ' , gpsd.fix.climb
-        #print 'track       ' , gpsd.fix.track
-        #print 'mode        ' , gpsd.fix.mode
-        #print
-        #print 'sats        ' , gpsd.satellites
-
-        time.sleep(5) #set to whatever
-
-except (KeyboardInterrupt, SystemExit):
-    print "\nKilling Thread..."
+except (KeyboardInterrupt):
     gps_thread.running = False
     gps_thread.join()
-print "Done.\nExiting."
