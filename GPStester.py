@@ -7,7 +7,7 @@ import threading
 class GpsPoller(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.gpsd = gps.gps(mode=WATCH_ENABLE)
+        self.gpsd = gps.gps(mode=gps.WATCH_ENABLE)
         self.current_value = None # ???
         self.running = True
 
