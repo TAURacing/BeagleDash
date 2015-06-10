@@ -32,13 +32,13 @@ class GpsPoller(threading.Thread):
                 csv_row = list()
                 delta_time = '%.3f' % delta_time
                 csv_row.append(delta_time)
-                utc_time = '%.3f' % gpsd.fix.utc
+                utc_time = '%.3f' % self.gpsd.fix.utc
                 csv_row.append(utc_time)
-                latitude = '%.5f' % gpsd.fix.latitude
+                latitude = '%.5f' % self.gpsd.fix.latitude
                 csv_row.append(latitude)
-                longitude = '%.5f' % gpsd.fix.longitude
+                longitude = '%.5f' % self.gpsd.fix.longitude
                 csv_row.append(longitude)
-                speed_ms = '%.2f' % gpsd.fix.speed
+                speed_ms = '%.2f' % self.gpsd.fix.speed
                 csv_row.append(speed_ms)
                 if self.__debug:
                         print(csv_row)
