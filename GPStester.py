@@ -19,10 +19,10 @@ class GpsPoller(threading.Thread):
     def run(self):
         global gpsd
         while gpsp.running:
-            if gpsd.next():
+            if gpsd.next() != -1:
                 print('got data')
-            else:
-                pass
+            elif: gpsd.next() == 1:
+                print('got -1')
 
 if __name__ == '__main__':
     gpsp = GpsPoller() # create the thread
