@@ -22,17 +22,17 @@ The CAN logging is depending on enabling BB-DCAN1
 """
 if GPS_logging:
     # Arguments are the log filename and if debugging is on or off
-    os.cmd('gpsd /dev/ttyO5 -F /var/run/gpsd.sock')
+    os.system('gpsd /dev/ttyO5 -F /var/run/gpsd.sock')
     time.sleep(0.5)
     gps_thread = GPSPoller('./gps.csv', True)
     gps_thread.start()
 
 if CAN_logging:
-    os.cmd('echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots')
+    os.system('echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots')
     time.sleep(0.5)
-    os.cmd('ip link set can0 type can bitrate 1000000')
+    os.system('ip link set can0 type can bitrate 1000000')
     time.sleep(0.5)
-    os.cmd('ifconfig can0 up')
+    os.system('ifconfig can0 up')
     time.sleep(0.5)
 
     can.rc['interface'] = 'socketcan_ctypes'
