@@ -28,12 +28,10 @@ if GPS_logging:
     gps_thread.start()
 
 if CAN_logging:
-    os.system('echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots')
-    time.sleep(0.5)
-    os.system('ip link set can0 type can bitrate 1000000')
-    time.sleep(0.5)
-    os.system('ifconfig can0 up')
-    time.sleep(0.5)
+    """
+    Sleep a bit to allow the system to enable CAN interfaces
+    """
+    time.sleep(5)
 
     #can.rc['interface'] = 'socketcan_ctypes'
     can_interface = 'can0'
