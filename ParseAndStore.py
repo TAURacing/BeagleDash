@@ -9,8 +9,8 @@ from CANstorage import CanStorage
 
 class ParseAndStore(can.Listener):
     __parser = CanParser()
-    __0x600_file_name = './can0x600.csv'
-    __0x601_file_name = './can0x601.csv'
+    __0x600_file_name = './logs/can0x600.csv'
+    __0x601_file_name = './logs/can0x601.csv'
     __0x600_file = None
     __0x601_file = None
     __0x600_csv_writer = None

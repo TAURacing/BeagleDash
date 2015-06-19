@@ -25,7 +25,7 @@ if GPS_logging:
     # Arguments are the log filename and if debugging is on or off
     os.system('gpsd /dev/ttyO5 -F /var/run/gpsd.sock')
     time.sleep(0.5)
-    gps_thread = GPSPoller('./gps.csv', False)
+    gps_thread = GPSPoller('./logs/gps.csv', False)
     gps_thread.start()
 
 if CAN_logging:
@@ -54,7 +54,7 @@ if MPU_logging:
     z_gyro_offset = -5
     enable_debug_output = False
     enable_logging = True
-    log_file = './mpulog.csv'
+    log_file = './logs/mpulog.csv'
 
     mpu = MPU6050(i2c_bus, device_address, x_accel_offset,
                   y_accel_offset, z_accel_offset, x_gyro_offset,
