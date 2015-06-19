@@ -42,7 +42,7 @@ class ParseAndStore(can.Listener):
         if self.__0x601_file_name:
             self.__0x601_file_name.close()
 
-
+"""
 can.rc['interface'] = 'socketcan_ctypes'
 from can.interfaces.interface import Bus
 
@@ -58,3 +58,4 @@ try:
         time.sleep(1)
 except KeyboardInterrupt:
     bus.shutdown()
+"""

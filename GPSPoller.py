@@ -13,7 +13,7 @@ class GpsPoller(threading.Thread):
     __debug = None
     running = False
 
-    def __init__(self, a_log_file_name='./gps.csv', a_debug = False):
+    def __init__(self, a_log_file_name='./gps.csv', a_debug=False):
         self.__log_file_name = a_log_file_name
         self.__log_file = open(self.__log_file_name, 'wb')
         self.__csv_writer = csv.writer(self.__log_file, delimiter=',',
@@ -41,11 +41,12 @@ class GpsPoller(threading.Thread):
                 speed_ms = '%.2f' % self.gpsd.fix.speed
                 csv_row.append(speed_ms)
                 if self.__debug:
-                        print(csv_row)
+                    print(csv_row)
                 self.__csv_writer.writerow(csv_row)
             elif self.gpsd.next() == 1:
                 print('got -1')
 
+"""
 gps_thread = GpsPoller('./gps.csv', True)
 try:
     gps_thread.start()
@@ -55,3 +56,4 @@ try:
 except (KeyboardInterrupt):
     gps_thread.running = False
     gps_thread.join()
+"""
