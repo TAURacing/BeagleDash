@@ -5,6 +5,7 @@ import time
 from GPSPoller import GPSPoller
 from ParseAndStore import ParseAndStore
 from can.interfaces.interface import Bus
+import can
 import MPU6050
 from MPU6050 import MPU6050
 from MPU6050 import MPU6050IRQHandler
