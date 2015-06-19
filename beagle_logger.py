@@ -22,6 +22,8 @@ The CAN logging is depending on enabling BB-DCAN1
 """
 if GPS_logging:
     # Arguments are the log filename and if debugging is on or off
+    os.cmd('gpsd /dev/ttyO5 -F /var/run/gpsd.sock')
+    time.sleep(0.5)
     gps_thread = GPSPoller('./gps.csv', True)
     gps_thread.start()
 
