@@ -35,7 +35,7 @@ if CAN_logging:
     os.system('ifconfig can0 up')
     time.sleep(0.5)
 
-    can.rc['interface'] = 'socketcan_ctypes'
+    #can.rc['interface'] = 'socketcan_ctypes'
     can_interface = 'can0'
     bus = Bus(can_interface)
     # Arguments are the bus we're listening on and the function called on a
