@@ -22,7 +22,7 @@ The CAN logging is depending on enabling BB-DCAN1
 """
 if GPS_logging:
     # Arguments are the log filename and if debugging is on or off
-    gps_thread = GpsPoller('./gps.csv', True)
+    gps_thread = GPSPoller('./gps.csv', True)
     gps_thread.start()
 
 if CAN_logging:

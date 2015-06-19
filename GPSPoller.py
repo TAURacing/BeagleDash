@@ -4,7 +4,7 @@ import gps
 import csv
 
 
-class GpsPoller(threading.Thread):
+class GPSPoller(threading.Thread):
     __log_file_name = None
     __log_file = None
     __csv_writer = None
@@ -47,8 +47,8 @@ class GpsPoller(threading.Thread):
                 print('got -1')
 
 """
-gps_thread = GpsPoller('./gps.csv', True)
 try:
+    gps_thread = GpsPoller('./gps.csv', True)
     gps_thread.start()
     while True:
         time.sleep(1)
