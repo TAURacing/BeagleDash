@@ -53,7 +53,7 @@ if MPU_logging:
     z_gyro_offset = -5
     enable_debug_output = True
     enable_logging = True
-    log_file = 'mpulog.csv'
+    log_file = './mpulog.csv'
 
     mpu = MPU6050(i2c_bus, device_address, x_accel_offset,
                   y_accel_offset, z_accel_offset, x_gyro_offset,
