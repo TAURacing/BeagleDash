@@ -8,6 +8,7 @@ from CANstorage import CanStorage
 
 
 class ParseAndStore(can.Listener):
+    # TODO: Create an instance of a DataToUDP here
     __parser = CanParser()
     __0x600_file_name = './logs/can0x600.csv'
     __0x601_file_name = './logs/can0x601.csv'
@@ -28,6 +29,8 @@ class ParseAndStore(can.Listener):
 
     def on_message_received(self, msg):
         data = self.__parser.parse_can_message_to_list(msg)
+        # TODO: Integrate the UDP sender here
+
         if data[0] == 0x600:
             self.__0x600_csv_writer.writerow(data[1:])
         elif data[0] == 0x601:
