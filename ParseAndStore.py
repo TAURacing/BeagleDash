@@ -1,15 +1,18 @@
-__author__ = 'Geir'
-
 import can
 import csv
 import time
 from CANparser import CanParser
 from CANstorage import CanStorage
+from DataToUDP import DataToUDP
+
+__author__ = 'Geir'
 
 
 class ParseAndStore(can.Listener):
     # TODO: Create an instance of a DataToUDP here
+    __sender = None
     __parser = CanParser()
+    # TODO: Add logging files for 0x602 frame if needed
     __0x600_file_name = './logs/can0x600.csv'
     __0x601_file_name = './logs/can0x601.csv'
     __0x600_file = None
@@ -17,7 +20,8 @@ class ParseAndStore(can.Listener):
     __0x600_csv_writer = None
     __0x601_csv_writer = None
 
-    def __init__(self):
+    def __init__(self, a_IP="192.168.2.101", a_port=5555):
+        self.__sender = DataToUDP(a_IP, a_port)
         self.__0x600_file = open(self.__0x600_file_name, 'wb')
         self.__0x601_file = open(self.__0x601_file_name, 'wb')
         self.__0x600_csv_writer = csv.writer(self.__0x600_file, delimiter=',',
@@ -30,7 +34,7 @@ class ParseAndStore(can.Listener):
     def on_message_received(self, msg):
         data = self.__parser.parse_can_message_to_list(msg)
         # TODO: Integrate the UDP sender here
-
+        self.__sender(data)
         if data[0] == 0x600:
             self.__0x600_csv_writer.writerow(data[1:])
         elif data[0] == 0x601:

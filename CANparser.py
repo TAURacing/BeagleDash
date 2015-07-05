@@ -1,6 +1,6 @@
-__author__ = 'Geir Istad'
 from ctypes import c_int16
 import time
+__author__ = 'Geir Istad'
 
 
 class CanParser:
@@ -74,47 +74,72 @@ class CanParser:
 
         # For frame 0
         rpm_container = \
-            self.__init_ecu_container(dict(), 'rpm', self.__frame_list[0], 0,
+            self.__init_ecu_container(dict(), 'rpm',
+                                      self.__frame_list[0], 0,
                                       True, 1)
         self.__add_ecu_container_to_ecu_dicts(rpm_container)
         eot_container = \
-            self.__init_ecu_container(dict(), 'eot', self.__frame_list[0], 2,
+            self.__init_ecu_container(dict(), 'eot',
+                                      self.__frame_list[0], 2,
                                       True, 1.0 / 10.0)
         self.__add_ecu_container_to_ecu_dicts(eot_container)
         vbat_container = \
-            self.__init_ecu_container(dict(), 'vbat', self.__frame_list[0], 4,
+            self.__init_ecu_container(dict(), 'vbat',
+                                      self.__frame_list[0], 4,
                                       True, 1.0 / 1000.0)
         self.__add_ecu_container_to_ecu_dicts(vbat_container)
-        map1_container = \
-            self.__init_ecu_container(dict(), 'map1', self.__frame_list[0], 6,
-                                      True, 1)
-        self.__add_ecu_container_to_ecu_dicts(map1_container)
+        drivenSpeed_container = \
+            self.__init_ecu_container(dict(), 'drivenSpeed',
+                                      self.__frame_list[0], 6,
+                                      True, 0.036)
+        self.__add_ecu_container_to_ecu_dicts(drivenSpeed_container)
 
         # For frame 1
+        lam1_container = \
+            self.__init_ecu_container(dict(), 'lam1',
+                                      self.__frame_list[1], 0,
+                                      True, 1.0 / 1000.0)
+        self.__add_ecu_container_to_ecu_dicts(tps1_container)
+        ect1_container = \
+            self.__init_ecu_container(dict(), 'ect1',
+                                      self.__frame_list[1], 2,
+                                      True, 1.0/10.0)
+        self.__add_ecu_container_to_ecu_dicts(ect1_container)
         tps1_container = \
-            self.__init_ecu_container(dict(), 'tps1', self.__frame_list[1], 0,
+            self.__init_ecu_container(dict(), 'tps1',
+                                      self.__frame_list[1], 4,
                                       True, 1.0 / 81.92)
         self.__add_ecu_container_to_ecu_dicts(tps1_container)
         eop1_container = \
-            self.__init_ecu_container(dict(), 'eop1', self.__frame_list[1], 2,
+            self.__init_ecu_container(dict(), 'eop1',
+                                      self.__frame_list[1], 6,
                                       True, 1)
         self.__add_ecu_container_to_ecu_dicts(eop1_container)
+        # Gear removed since the ECU does not supply info about it
+        """
         gear_container = \
             self.__init_ecu_container(dict(), 'gear', self.__frame_list[1], 4,
                                       True, 1)
         self.__add_ecu_container_to_ecu_dicts(gear_container)
-        drivenSpeed_container = \
-            self.__init_ecu_container(dict(), 'drivenSpeed',
-                                      self.__frame_list[1], 6, True, 0.036)
-        self.__add_ecu_container_to_ecu_dicts(drivenSpeed_container)
+        """
+        # TODO: Move map to next frame
+        """
+        map1_container = \
+            self.__init_ecu_container(dict(), 'map1', self.__frame_list[0], 6,
+                                      True, 1.0)
+        self.__add_ecu_container_to_ecu_dicts(map1_container)
+        """
+
+        # For frame 2
+        # TODO: Fill this frame
 
     def __add_ecu_container_to_ecu_dicts(self, a_dict):
         """
         Method to add ECU data containers to self.ecu_storage and in
         self.ecu_frame_reference_key lists.
 
-        :param a_dict: Dictionary containing a distinct ECU data set for parsing
-        CANBUS data.
+        :param a_dict: Dictionary containing a distinct ECU data set for
+        parsing CANBUS data.
         :return: N/A
         """
         ecu_storage_key = a_dict['data_id']
@@ -130,7 +155,7 @@ class CanParser:
             # to it
             self.__ecu_frame_reference.setdefault(ecu_frame_reference_key,
                                                   list()).append(
-                ecu_storage_key)
+                                                    ecu_storage_key)
 
     @staticmethod
     def convert_data_values(a_message, a_start_frame, a_is_signed,
@@ -196,7 +221,8 @@ class CanParser:
             for data_types in selected_list:
                 is_signed = self.__ecu_storage[data_types]['signed']
                 conversion_value = self.__ecu_storage[data_types]['conversion']
-                start_frame = self.__ecu_storage[data_types]['start_frame_slot']
+                start_frame = \
+                    self.__ecu_storage[data_types]['start_frame_slot']
                 received_value = self.convert_data_values(a_message,
                                                           start_frame,
                                                           is_signed,
@@ -243,7 +269,8 @@ class CanParser:
             for data_types in selected_list:
                 is_signed = self.__ecu_storage[data_types]['signed']
                 conversion_value = self.__ecu_storage[data_types]['conversion']
-                start_frame = self.__ecu_storage[data_types]['start_frame_slot']
+                start_frame = \
+                    self.__ecu_storage[data_types]['start_frame_slot']
                 received_value = self.convert_data_values(a_message,
                                                           start_frame,
                                                           is_signed,
