@@ -16,6 +16,11 @@ CAN_logging = True
 MPU_logging = True
 
 """
+Sleep a bit to allow the system to enable CAN interfaces
+"""
+time.sleep(5)
+
+"""
 All logging is based on threading.
 The MPU logging is depending on IRQ on P9_11.
 The GPS logging is depending on gpsd on ttyO5
@@ -29,10 +34,6 @@ if GPS_logging:
     gps_thread.start()
 
 if CAN_logging:
-    """
-    Sleep a bit to allow the system to enable CAN interfaces
-    """
-    time.sleep(5)
 
     # can.rc['interface'] = 'socketcan_ctypes'
     can_interface = 'can0'
