@@ -99,7 +99,7 @@ class CanParser:
             self.__init_ecu_container(dict(), 'lam1',
                                       self.__frame_list[1], 0,
                                       True, 1.0 / 1000.0)
-        self.__add_ecu_container_to_ecu_dicts(tps1_container)
+        self.__add_ecu_container_to_ecu_dicts(lam1_container)
         ect1_container = \
             self.__init_ecu_container(dict(), 'ect1',
                                       self.__frame_list[1], 2,
